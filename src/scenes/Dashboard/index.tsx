@@ -9,6 +9,7 @@ import {
   User,
   UserGreeting,
   UserName,
+  Icon,
 } from "./styles";
 
 export function Dashboard() {
@@ -28,6 +29,8 @@ export function Dashboard() {
               <UserName>Luiz</UserName>
             </User>
           </UserInfo>
+
+          <Icon />
         </UserWrapper>
       </Header>
     </Container>

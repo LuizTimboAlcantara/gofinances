@@ -9,7 +9,7 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 
-import { CategorySelect } from "./src/scenes/CategorySelect";
+import { Register } from "./src/scenes/Register";
 
 import theme from "./src/global/styles/theme";
 
@@ -26,7 +26,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <CategorySelect category="Categoria" />
+      <Register />
     </ThemeProvider>
   );
 }

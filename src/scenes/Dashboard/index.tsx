@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { HighlightCard } from "../../components/HighlightCard";
 import {
@@ -24,7 +25,6 @@ import {
   Title,
   TransactionsList,
 } from "./styles";
-import { date } from "yup";
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
@@ -63,6 +63,12 @@ export function Dashboard() {
   useEffect(() => {
     loadTransaction();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadTransaction();
+    }, [])
+  );
 
   return (
     <Container>

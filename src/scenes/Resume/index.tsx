@@ -4,6 +4,8 @@ import { VictoryPie } from "victory-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useTheme } from "styled-components";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { addMonths, subMonths, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 import { HistoryCard } from "../../components/HistoryCard";
 
@@ -42,6 +44,17 @@ export function Resume() {
   const theme = useTheme();
 
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
+  const [selectDate, setSelectDate] = useState(new Date());
+
+  function handleChangeDate(action: "next" | "prev") {
+    if (action === "next") {
+      const newDate = addMonths(selectDate, 1);
+      setSelectDate(newDate);
+    } else {
+      const newDate = subMonths(selectDate, 1);
+      setSelectDate(newDate);
+    }
+  }
 
   async function loadData() {
     const response = await AsyncStorage.getItem(dataKey);
@@ -49,6 +62,9 @@ export function Resume() {
 
     const expensives = responseFormatted.filter(
       (expensive: TransactionData) => expensive.type === "negative"
+      // &&
+      // new Date(expensive.date).getMonth() === selectDate.getMonth() &&
+      // new Date(expensive.date).getFullYear() === selectDate.getFullYear()
     );
 
     const expensivesTotal = expensives.reduce(
@@ -93,7 +109,7 @@ export function Resume() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [selectDate]);
 
   return (
     <Container>
@@ -109,13 +125,13 @@ export function Resume() {
         }}
       >
         <MonthSelect>
-          <MonthSelectButton>
+          <MonthSelectButton onPress={() => handleChangeDate("prev")}>
             <MonthSelectIcon name="chevron-left" />
           </MonthSelectButton>
 
-          <Month>Julho</Month>
+          <Month>{format(selectDate, "MMMM,yyyy", { locale: ptBR })}</Month>
 
-          <MonthSelectButton>
+          <MonthSelectButton onPress={() => handleChangeDate("next")}>
             <MonthSelectIcon name="chevron-right" />
           </MonthSelectButton>
         </MonthSelect>
